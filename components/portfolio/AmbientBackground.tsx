@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useMemo, useRef, useState } from "react";
 
 /**
@@ -10,7 +12,14 @@ import { useEffect, useMemo, useRef, useState } from "react";
  */
 
 type Pt = { x: number; y: number };
-type Path = { d: string; len: number; width: number; dur: number; delay: number; parallax: number };
+type Path = {
+  d: string;
+  len: number;
+  width: number;
+  dur: number;
+  delay: number;
+  parallax: number;
+};
 type Node = { x: number; y: number; r: number; delay: number };
 
 // Deterministic PRNG so SSR & client agree (no hydration flicker)
@@ -26,7 +35,8 @@ function mulberry32(seed: number) {
 const VBW = 1600;
 const VBH = 1000;
 const ACCENT = "#10B981"; // deep emerald
-const PRIMARY_LINE = "M -120 640 C 180 520, 310 250, 560 330 S 860 720, 1110 500 S 1380 210, 1720 360";
+const PRIMARY_LINE =
+  "M -120 640 C 180 520, 310 250, 560 330 S 860 720, 1110 500 S 1380 210, 1720 360";
 
 function buildScene() {
   const rand = mulberry32(7);
@@ -39,10 +49,17 @@ function buildScene() {
     const startSide = Math.floor(rand() * 4);
     let p: Pt;
     switch (startSide) {
-      case 0: p = { x: rand() * VBW, y: -20 }; break;
-      case 1: p = { x: VBW + 20, y: rand() * VBH }; break;
-      case 2: p = { x: rand() * VBW, y: VBH + 20 }; break;
-      default: p = { x: -20, y: rand() * VBH };
+      case 0:
+        p = { x: rand() * VBW, y: -20 };
+        break;
+      case 1:
+        p = { x: VBW + 20, y: rand() * VBH };
+        break;
+      case 2:
+        p = { x: rand() * VBW, y: VBH + 20 };
+        break;
+      default:
+        p = { x: -20, y: rand() * VBH };
     }
     const points: Pt[] = [p];
     const segs = 4 + Math.floor(rand() * 4);
@@ -69,7 +86,12 @@ function buildScene() {
       approxLen += Math.hypot(b.x - a.x, b.y - a.y) * 1.1;
       // occasional node at intersection-ish points
       if (rand() < 0.45) {
-        nodes.push({ x: b.x, y: b.y, r: 1.2 + rand() * 1.8, delay: rand() * 6 });
+        nodes.push({
+          x: b.x,
+          y: b.y,
+          r: 1.2 + rand() * 1.8,
+          delay: rand() * 6,
+        });
       }
     }
     paths.push({
@@ -95,10 +117,15 @@ function buildScene() {
     const ex = horiz ? mx : mx + 80 * (rand() < 0.5 ? -1 : 1);
     const ey = horiz ? my + 80 * (rand() < 0.5 ? -1 : 1) : my;
     const d = `M ${x1.toFixed(1)} ${y1.toFixed(1)} L ${mx.toFixed(1)} ${my.toFixed(1)} L ${ex.toFixed(1)} ${ey.toFixed(1)}`;
-    const approxLen = Math.hypot(mx - x1, my - y1) + Math.hypot(ex - mx, ey - my);
+    const approxLen =
+      Math.hypot(mx - x1, my - y1) + Math.hypot(ex - mx, ey - my);
     paths.push({
-      d, len: approxLen, width: 0.7,
-      dur: 12 + rand() * 10, delay: -rand() * 15, parallax: 0.02 + rand() * 0.1,
+      d,
+      len: approxLen,
+      width: 0.7,
+      dur: 12 + rand() * 10,
+      delay: -rand() * 15,
+      parallax: 0.02 + rand() * 0.1,
     });
     nodes.push({ x: ex, y: ey, r: 1.5, delay: rand() * 5 });
   }
@@ -140,7 +167,9 @@ export function AmbientBackground() {
       scrollY = y;
       targetSpeed = 1 + Math.min(velocity / 30, 1.6); // up to ~2.6x during fast scroll
       window.clearTimeout(idleTimer);
-      idleTimer = window.setTimeout(() => { targetSpeed = 1; }, 220);
+      idleTimer = window.setTimeout(() => {
+        targetSpeed = 1;
+      }, 220);
     };
 
     const tick = () => {
@@ -184,7 +213,13 @@ export function AmbientBackground() {
         className="absolute inset-0 h-full w-full"
       >
         <defs>
-          <filter id="ambient-glow" x="-20%" y="-20%" width="140%" height="140%">
+          <filter
+            id="ambient-glow"
+            x="-20%"
+            y="-20%"
+            width="140%"
+            height="140%"
+          >
             <feGaussianBlur stdDeviation="2.2" result="b" />
             <feMerge>
               <feMergeNode in="b" />
@@ -203,7 +238,13 @@ export function AmbientBackground() {
         </defs>
 
         {/* Path groups (parallax) */}
-        <g filter="url(#ambient-glow)" stroke={ACCENT} fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <g
+          filter="url(#ambient-glow)"
+          stroke={ACCENT}
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
           <g data-parallax="0.09" style={{ willChange: "transform" }}>
             <path
               d={PRIMARY_LINE}
@@ -225,7 +266,11 @@ export function AmbientBackground() {
             const dash = Math.max(80, p.len * 0.22);
             const gap = p.len;
             return (
-              <g key={`p${i}`} data-parallax={p.parallax} style={{ willChange: "transform" }}>
+              <g
+                key={`p${i}`}
+                data-parallax={p.parallax}
+                style={{ willChange: "transform" }}
+              >
                 <path
                   d={p.d}
                   strokeWidth={p.width}
@@ -257,7 +302,9 @@ export function AmbientBackground() {
               style={
                 reduced
                   ? { opacity: 0.5 }
-                  : { animation: `ambient-pulse ${4 + (i % 5)}s ease-in-out ${n.delay}s infinite` }
+                  : {
+                      animation: `ambient-pulse ${4 + (i % 5)}s ease-in-out ${n.delay}s infinite`,
+                    }
               }
             />
           ))}
