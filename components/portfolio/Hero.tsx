@@ -1,10 +1,11 @@
 import { ArrowUpRight, Download } from "lucide-react";
 import { Reveal, NeuralVisual } from "./visuals";
 import { ACHIEVEMENTS } from "@/lib/data";
+import image from "../../public/profile.jpg";
 
 function Hero() {
   return (
-    <section id="top" className="relative px-6 pb-24 pt-36 md:pt-44 lg:pb-32">
+    <section id="top" className="relative px-6 pb-24 pt-33 md:pt-25 lg:pb-32">
       <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[1.15fr_1fr]">
         <div>
           <Reveal>
@@ -61,7 +62,15 @@ function Hero() {
           </Reveal>
         </div>
 
-        <Reveal delay={0.15} className="flex justify-center lg:justify-end">
+        <Reveal
+          delay={0.15}
+          className="flex justify-center items-center relative scale-150"
+        >
+          <img
+            src={image.src}
+            alt="Profile picture of Devansh Tyagi"
+            className="rounded-full border-accent/50 border-4 object-cover w-36 h-36 lg:w-55 lg:h-55 absolute z-1000"
+          />
           <NeuralVisual />
         </Reveal>
       </div>

@@ -166,16 +166,16 @@ const NAV = [
 
 const ACHIEVEMENTS = [
   {
-    icon: FileText,
-    title: "Research Publication",
-    subtitle: "Submitted to npj Computational Materials · 2026",
-    tag: "Under Review",
-  },
-  {
     icon: Trophy,
     title: "9.27 CGPA — Top of Class",
     subtitle: "Ranked 1st in cohort · Computer Science",
     tag: null,
+  },
+  {
+    icon: FileText,
+    title: "Research Publication",
+    subtitle: "Submitted to npj Computational Materials · 2026",
+    tag: "Under Review",
   },
   {
     icon: Rocket,
