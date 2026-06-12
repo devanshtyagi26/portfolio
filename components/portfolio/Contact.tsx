@@ -1,5 +1,6 @@
 import { ArrowUpRight, Mail, FileText } from "lucide-react";
 import { Reveal } from "./visuals";
+import { FaGithub } from "react-icons/fa";
 
 function Contact() {
   const links = [
@@ -16,7 +17,7 @@ function Contact() {
       href: "https://linkedin.com",
     },
     {
-      // icon: Github,
+      icon: FaGithub,
       label: "GitHub",
       value: "@devansh-tyagi",
       href: "https://github.com",

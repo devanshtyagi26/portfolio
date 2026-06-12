@@ -1,3 +1,5 @@
+import { Rocket, FileText, Trophy} from "lucide-react";
+
 const TIMELINE = [
   {
     year: "2022",
@@ -162,11 +164,25 @@ const NAV = [
   { href: "#contact", label: "Contact" },
 ];
 
-const METRICS = [
-  { value: "9.27", label: "CGPA" },
-  { value: "Under Review", label: "Research Paper" },
-  { value: "5+", label: "Production Projects" },
-  { value: "FastAPI · Next.js", label: "Full-stack ML" },
+const ACHIEVEMENTS = [
+  {
+    icon: FileText,
+    title: "Research Publication",
+    subtitle: "Submitted to npj Computational Materials · 2026",
+    tag: "Under Review",
+  },
+  {
+    icon: Trophy,
+    title: "9.27 CGPA — Top of Class",
+    subtitle: "Ranked 1st in cohort · Computer Science",
+    tag: null,
+  },
+  {
+    icon: Rocket,
+    title: "7+ projects shipped to production",
+    subtitle: "4 ML models deployed · Real-world usage",
+    tag: null,
+  },
 ];
+export { TIMELINE, PROJECTS, RESEARCH_PIPELINE, SKILLS, NAV, ACHIEVEMENTS };
 
-export { TIMELINE, PROJECTS, RESEARCH_PIPELINE, SKILLS, NAV, METRICS };

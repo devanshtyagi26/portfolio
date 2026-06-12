@@ -2,6 +2,7 @@ import { ArrowUpRight, ExternalLink } from "lucide-react";
 import SectionLabel from "./SectionLabel";
 import { Reveal } from "./visuals";
 import { PROJECTS } from "@/lib/data";
+import { FaGithub } from "react-icons/fa";
 
 function Projects() {
   return (
@@ -41,7 +42,7 @@ function Projects() {
                   className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-4 py-2 text-xs font-medium text-foreground hover:bg-surface-hover"
                   href="#"
                 >
-                  {/* <Github className="h-3.5 w-3.5" /> GitHub */}
+                  <FaGithub className="h-3.5 w-3.5" /> GitHub
                 </a>
               </div>
             </div>
@@ -118,7 +119,7 @@ function Projects() {
                       aria-label="GitHub"
                       className="rounded-full border border-border p-1.5 text-muted-foreground hover:text-foreground"
                     >
-                      {/* <Github className="h-3.5 w-3.5" /> */}
+                      <FaGithub className="h-3.5 w-3.5" />
                     </a>
                   </div>
                 </div>
@@ -131,4 +132,4 @@ function Projects() {
   );
 }
 
-export default Projects
+export default Projects;

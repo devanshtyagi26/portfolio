@@ -1,152 +1,213 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
+import image from "../../public/profile.jpg";
 
 export function NeuralVisual() {
-  // Deterministic layered neural network visualization
-  const layers = useMemo(() => [4, 6, 6, 3], []);
-  const width = 460;
-  const height = 460;
-  const padX = 60;
-  const padY = 50;
-
-  const nodes: { x: number; y: number; layer: number; i: number }[] = [];
-  layers.forEach((count, li) => {
-    const xs = padX + (li * (width - padX * 2)) / (layers.length - 1);
-    for (let i = 0; i < count; i++) {
-      const ys = padY + (i * (height - padY * 2)) / Math.max(count - 1, 1);
-      nodes.push({ x: xs, y: ys, layer: li, i });
-    }
-  });
-
-  const edges: {
-    x1: number;
-    y1: number;
-    x2: number;
-    y2: number;
-    key: string;
-    delay: number;
-  }[] = [];
-  for (let li = 0; li < layers.length - 1; li++) {
-    const a = nodes.filter((n) => n.layer === li);
-    const b = nodes.filter((n) => n.layer === li + 1);
-    a.forEach((na) => {
-      b.forEach((nb) => {
-        edges.push({
-          x1: na.x,
-          y1: na.y,
-          x2: nb.x,
-          y2: nb.y,
-          key: `${na.layer}-${na.i}-${nb.layer}-${nb.i}`,
-          delay: (na.i + nb.i + li) * 0.08,
-        });
-      });
-    });
-  }
-
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [mounted, setMounted] = useState(false);
+  const rafRef = useRef<number>(0);
+
   useEffect(() => {
     setMounted(true);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const W = 460,
+      H = 460;
+    const cx = W / 2,
+      cy = H / 2;
+
+    const img = new Image();
+    img.src = image.src;
+
+    // Orbital rings config
+    const RINGS = [
+      { radius: 162, count: 6, speed: 0.004, size: 2.8, opacity: 0.9, dir: 1 },
+      {
+        radius: 185,
+        count: 9,
+        speed: 0.0028,
+        size: 2.0,
+        opacity: 0.6,
+        dir: -1,
+      },
+      {
+        radius: 208,
+        count: 12,
+        speed: 0.0018,
+        size: 1.4,
+        opacity: 0.4,
+        dir: 1,
+      },
+    ];
+
+    // Init dot angles evenly spaced per ring
+    const ringDots = RINGS.map((r) =>
+      Array.from({ length: r.count }, (_, i) => (i / r.count) * Math.PI * 2),
+    );
+
+    // Scattered ambient particles (random drift)
+    const ambient = Array.from({ length: 35 }, () => ({
+      x: cx + (Math.random() - 0.5) * 340,
+      y: cy + (Math.random() - 0.5) * 340,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      size: 0.8 + Math.random() * 1.4,
+      opacity: 0.15 + Math.random() * 0.3,
+    }));
+
+    // Connector lines between nearby ring dots (computed once, updated live)
+    let pulseT = 0;
+
+    function draw() {
+      ctx!.clearRect(0, 0, W, H);
+
+      // --- Pulse rings ---
+      pulseT += 0.01;
+      for (let p = 0; p < 2; p++) {
+        const t = (pulseT + p * 0.5) % 1;
+        const pr = 142 + t * 75;
+        const pa = (1 - t) * (p === 0 ? 0.3 : 0.18);
+        ctx!.beginPath();
+        ctx!.arc(cx, cy, pr, 0, Math.PI * 2);
+        ctx!.strokeStyle = `oklch(0.68 0.13 175 / ${pa})`;
+        ctx!.lineWidth = 1.5;
+        ctx!.stroke();
+      }
+
+      // --- Connector lines between ring dots across rings ---
+      // Connect each dot in ring 0 to nearest dot in ring 1
+      for (let i = 0; i < RINGS[0].count; i++) {
+        const ax = cx + Math.cos(ringDots[0][i]) * RINGS[0].radius;
+        const ay = cy + Math.sin(ringDots[0][i]) * RINGS[0].radius;
+        // find closest in ring 1
+        let minDist = Infinity,
+          closest = 0;
+        for (let j = 0; j < RINGS[1].count; j++) {
+          const bx = cx + Math.cos(ringDots[1][j]) * RINGS[1].radius;
+          const by = cy + Math.sin(ringDots[1][j]) * RINGS[1].radius;
+          const d = Math.hypot(ax - bx, ay - by);
+          if (d < minDist) {
+            minDist = d;
+            closest = j;
+          }
+        }
+        const bx = cx + Math.cos(ringDots[1][closest]) * RINGS[1].radius;
+        const by = cy + Math.sin(ringDots[1][closest]) * RINGS[1].radius;
+        if (minDist < 80) {
+          ctx!.beginPath();
+          ctx!.moveTo(ax, ay);
+          ctx!.lineTo(bx, by);
+          ctx!.strokeStyle = `oklch(0.68 0.13 175 / ${0.12 * (1 - minDist / 80)})`;
+          ctx!.lineWidth = 0.7;
+          ctx!.stroke();
+        }
+      }
+
+      // --- Ambient particles ---
+      ambient.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        // Wrap inside a soft area
+        const dist = Math.hypot(p.x - cx, p.y - cy);
+        if (dist > 215) {
+          p.vx *= -1;
+          p.vy *= -1;
+        }
+        // Stay outside photo
+        if (dist < 148) {
+          const angle = Math.atan2(p.y - cy, p.x - cx);
+          p.x = cx + Math.cos(angle) * 150;
+          p.y = cy + Math.sin(angle) * 150;
+          p.vx *= -0.5;
+          p.vy *= -0.5;
+        }
+        ctx!.beginPath();
+        ctx!.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx!.fillStyle = `oklch(0.68 0.13 175 / ${p.opacity})`;
+        ctx!.fill();
+      });
+
+      // --- Orbital rings & dots ---
+      RINGS.forEach((ring, ri) => {
+        // Orbit track
+        ctx!.beginPath();
+        ctx!.arc(cx, cy, ring.radius, 0, Math.PI * 2);
+        ctx!.strokeStyle = `oklch(0.68 0.13 175 / 0.07)`;
+        ctx!.lineWidth = 0.6;
+        ctx!.stroke();
+
+        ringDots[ri].forEach((angle, di) => {
+          ringDots[ri][di] += ring.speed * ring.dir;
+          const x = cx + Math.cos(angle) * ring.radius;
+          const y = cy + Math.sin(angle) * ring.radius;
+
+          // Glow halo
+          ctx!.beginPath();
+          ctx!.arc(x, y, ring.size * 2.2, 0, Math.PI * 2);
+          ctx!.fillStyle = `oklch(0.68 0.13 175 / 0.12)`;
+          ctx!.fill();
+
+          // Core dot
+          ctx!.beginPath();
+          ctx!.arc(x, y, ring.size, 0, Math.PI * 2);
+          ctx!.fillStyle = `oklch(0.68 0.13 175 / ${ring.opacity})`;
+          ctx!.fill();
+        });
+      });
+
+      // --- Photo ---
+      ctx!.save();
+      ctx!.beginPath();
+      ctx!.arc(cx, cy, 138, 0, Math.PI * 2);
+      ctx!.clip();
+      if (img.complete && img.naturalWidth > 0) {
+        ctx!.drawImage(img, cx - 138, cy - 138, 276, 276);
+      } else {
+        ctx!.fillStyle = "oklch(0.14 0 0)";
+        ctx!.fill();
+      }
+      ctx!.restore();
+
+      // Accent border
+      ctx!.beginPath();
+      ctx!.arc(cx, cy, 139, 0, Math.PI * 2);
+      ctx!.strokeStyle = "oklch(0.68 0.13 175 / 0.85)";
+      ctx!.lineWidth = 2.5;
+      ctx!.stroke();
+
+      // Soft inner glow ring
+      ctx!.beginPath();
+      ctx!.arc(cx, cy, 141, 0, Math.PI * 2);
+      ctx!.strokeStyle = "oklch(0.68 0.13 175 / 0.25)";
+      ctx!.lineWidth = 7;
+      ctx!.stroke();
+
+      rafRef.current = requestAnimationFrame(draw);
+    }
+
+    rafRef.current = requestAnimationFrame(draw);
+    return () => cancelAnimationFrame(rafRef.current);
   }, []);
 
   return (
-    <div className="relative aspect-square w-full max-w-[460px]">
-      {/* ambient glow */}
+    <div className="relative aspect-square w-full max-w-[460px] select-none">
       <div
-        className="pointer-events-none absolute inset-0 -z-10 rounded-full opacity-40 blur-3xl"
+        className="pointer-events-none absolute inset-0 -z-10 rounded-full opacity-25 blur-3xl"
         style={{
           background:
-            "radial-gradient(circle at 50% 50%, oklch(0.68 0.13 175 / 0.18), transparent 60%)",
+            "radial-gradient(circle at 50% 50%, oklch(0.68 0.13 175 / 0.3), transparent 65%)",
         }}
       />
-      <svg viewBox={`0 0 ${width} ${height}`} className="h-full w-full">
-        <defs>
-          <linearGradient id="edge" x1="0" x2="1">
-            <stop
-              offset="0%"
-              stopColor="oklch(0.68 0.13 175)"
-              stopOpacity="0.05"
-            />
-            <stop
-              offset="50%"
-              stopColor="oklch(0.68 0.13 175)"
-              stopOpacity="0.55"
-            />
-            <stop
-              offset="100%"
-              stopColor="oklch(0.68 0.13 175)"
-              stopOpacity="0.05"
-            />
-          </linearGradient>
-          <radialGradient id="node">
-            <stop offset="0%" stopColor="oklch(0.97 0 0)" />
-            <stop offset="100%" stopColor="oklch(0.68 0.13 175)" />
-          </radialGradient>
-        </defs>
-
-        {/* Faint grid */}
-        <g opacity="0.06">
-          {Array.from({ length: 10 }).map((_, i) => (
-            <line
-              key={`gv${i}`}
-              x1={(i * width) / 10}
-              y1="0"
-              x2={(i * width) / 10}
-              y2={height}
-              stroke="white"
-            />
-          ))}
-          {Array.from({ length: 10 }).map((_, i) => (
-            <line
-              key={`gh${i}`}
-              x1="0"
-              y1={(i * height) / 10}
-              x2={width}
-              y2={(i * height) / 10}
-              stroke="white"
-            />
-          ))}
-        </g>
-
-        {edges.map((e) => (
-          <line
-            key={e.key}
-            x1={e.x1}
-            y1={e.y1}
-            x2={e.x2}
-            y2={e.y2}
-            stroke="url(#edge)"
-            strokeWidth="0.6"
-            style={{
-              opacity: mounted ? 1 : 0,
-              transition: `opacity 1.2s ease ${e.delay}s`,
-            }}
-          />
-        ))}
-
-        {nodes.map((n, idx) => (
-          <g
-            key={`n${idx}`}
-            style={{
-              opacity: mounted ? 1 : 0,
-              transition: `opacity 0.6s ease ${0.4 + n.layer * 0.15 + n.i * 0.04}s`,
-              transformOrigin: `${n.x}px ${n.y}px`,
-              animation: mounted
-                ? `float-node 6s ease-in-out ${(n.layer + n.i) * 0.2}s infinite`
-                : undefined,
-            }}
-          >
-            <circle
-              cx={n.x}
-              cy={n.y}
-              r="8"
-              fill="oklch(0.19 0 0)"
-              stroke="oklch(0.32 0 0)"
-              strokeWidth="1"
-            />
-            <circle cx={n.x} cy={n.y} r="3" fill="url(#node)" />
-          </g>
-        ))}
-      </svg>
+      <canvas
+        ref={canvasRef}
+        width={460}
+        height={460}
+        className="h-full w-full"
+        style={{ opacity: mounted ? 1 : 0, transition: "opacity 1s ease" }}
+      />
     </div>
   );
 }
