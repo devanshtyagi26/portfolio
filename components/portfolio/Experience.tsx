@@ -6,6 +6,7 @@ function Experience() {
     <section id="experience" className="px-6 py-28 md:py-36">
       <div className="mx-auto max-w-6xl">
         <SectionLabel
+          data-scroll-node
           kicker="04 · Experience"
           title="Where the engineering muscle was built."
         />
@@ -22,7 +23,7 @@ function Experience() {
                 Full Stack Developer
               </div>
             </div>
-            <ul className="space-y-4 text-muted-foreground">
+            <ul data-scroll-node className="space-y-4 text-muted-foreground">
               {[
                 "Rebuilt legacy ticketing systems end-to-end using the MERN stack.",
                 "Reduced page load times significantly through targeted frontend optimization.",

@@ -1,29 +1,23 @@
-import { Rocket, FileText, Trophy} from "lucide-react";
+import { Trophy, FileText, Rocket, Star } from "lucide-react";
 
 const TIMELINE = [
   {
-    year: "2022",
-    title: "Began B.Sc. (Hons.) Computer Science",
+    year: "2022 – 2026",
+    title: "B.Sc. (Hons.) Computer Science",
     detail: "Ramanujan College, University of Delhi.",
   },
   {
-    year: "2024",
-    title: "Pivoted toward AI/ML research",
-    detail:
-      "Deep dive into scikit-learn, TensorFlow, and applied deep learning.",
-  },
-  {
-    year: "2025",
+    year: "Feb. 2025 – Apr. 2025",
     title: "Full Stack Developer at LOUDER",
     detail: "Rebuilt legacy ticketing systems with the MERN stack.",
   },
   {
-    year: "2025",
-    title: "CrystaLogiX research initiated",
+    year: "Aug. 2025",
+    title: "Materials Science Research initiated",
     detail: "Hybrid XGBoost ensemble for electronic bandgap prediction.",
   },
   {
-    year: "2026",
+    year: "Apr. 2026",
     title: "Manuscript under review",
     detail: "Submitted to npj Computational Materials.",
   },
@@ -167,22 +161,35 @@ const NAV = [
 const ACHIEVEMENTS = [
   {
     icon: Trophy,
-    title: "9.27 CGPA — Top of Class",
-    subtitle: "Ranked 1st in cohort · Computer Science",
-    tag: null,
+    title: "Ranked 1st in cohort",
+    subtitle: "Computer Science · Final year",
+    tag: "Top of class",
+    tagVariant: "info",
   },
   {
     icon: FileText,
-    title: "Research Publication",
-    subtitle: "Submitted to npj Computational Materials · 2026",
-    tag: "Under Review",
+    title: "Research publication",
+    subtitle: "npj Computational Materials · 2026",
+    tag: "Under review",
+    tagVariant: "warning",
   },
   {
     icon: Rocket,
-    title: "7+ projects shipped to production",
-    subtitle: "4 ML models deployed · Real-world usage",
-    tag: null,
+    title: "7+ projects shipped",
+    subtitle: "4 ML models in real-world usage",
+    tag: "Production",
+    tagVariant: "success",
   },
-];
+  {
+    icon: Star,
+    title: "9.27 CGPA",
+    subtitle: "Consistent academic excellence",
+    tag: "Top of class",
+    tagVariant: "info",
+  },
+] as const;
+
+export type TagVariant = "info" | "warning" | "success";
+
 export { TIMELINE, PROJECTS, RESEARCH_PIPELINE, SKILLS, NAV, ACHIEVEMENTS };
 

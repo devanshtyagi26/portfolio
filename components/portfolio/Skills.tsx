@@ -7,6 +7,7 @@ function Skills() {
     <section id="skills" className="px-6 py-28 md:py-36">
       <div className="mx-auto max-w-6xl">
         <SectionLabel
+          data-scroll-node
           kicker="05 · Toolkit"
           title="Tools I reach for, organized by intent."
         />

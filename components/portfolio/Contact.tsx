@@ -33,7 +33,10 @@ function Contact() {
     <section id="contact" className="px-6 py-28 md:py-40">
       <div className="mx-auto max-w-5xl text-center">
         <Reveal>
-          <div className="font-mono text-xs uppercase tracking-[0.25em] text-accent">
+          <div
+            data-scroll-node
+            className="font-mono text-xs uppercase tracking-[0.25em] text-accent"
+          >
             07 · Contact
           </div>
         </Reveal>
@@ -45,7 +48,10 @@ function Contact() {
           </h2>
         </Reveal>
         <Reveal delay={0.1}>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
+          <p
+            data-scroll-node
+            className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground"
+          >
             I'm always excited to discuss machine learning, research
             collaborations, innovative ideas, and opportunities to build
             meaningful technology.

@@ -9,6 +9,7 @@ function Projects() {
     <section id="projects" className="px-6 py-28 md:py-36">
       <div className="mx-auto max-w-6xl">
         <SectionLabel
+          data-scroll-node
           kicker="02 · Selected work"
           title="Projects with a research soul and a production spine."
           lead="A small set of things I've built end-to-end — from data pipeline to deployed interface."
@@ -46,7 +47,7 @@ function Projects() {
                 </a>
               </div>
             </div>
-            <ul className="mt-10 grid gap-4 md:grid-cols-3">
+            <ul data-scroll-node className="mt-10 grid gap-4 md:grid-cols-3">
               {PROJECTS[0].points.map((p) => (
                 <li
                   key={p}

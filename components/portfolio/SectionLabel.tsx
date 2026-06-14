@@ -4,13 +4,15 @@ function SectionLabel({
   kicker,
   title,
   lead,
+  fullWidth = false,
 }: {
   kicker: string;
   title: string;
   lead?: string;
+  fullWidth?: boolean;
 }) {
   return (
-    <div className="mb-14 max-w-3xl">
+    <div className={`mb-14 ${fullWidth ? "w-full" : "max-w-3xl"}`}>
       <Reveal>
         <div className="font-mono text-xs uppercase tracking-[0.25em] text-accent">
           {kicker}

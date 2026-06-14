@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 
 /**
  * Ambient animated SVG background.
@@ -21,6 +27,7 @@ type Path = {
   parallax: number;
 };
 type Node = { x: number; y: number; r: number; delay: number };
+type TracePoint = { x: number; y: number };
 
 // Deterministic PRNG so SSR & client agree (no hydration flicker)
 function mulberry32(seed: number) {
@@ -37,6 +44,7 @@ const VBH = 1000;
 const ACCENT = "#10B981"; // deep emerald
 const PRIMARY_LINE =
   "M -120 640 C 180 520, 310 250, 560 330 S 860 720, 1110 500 S 1380 210, 1720 360";
+const SCROLL_NODE_SELECTOR = "[data-scroll-node]";
 
 function buildScene() {
   const rand = mulberry32(7);
@@ -110,8 +118,6 @@ function buildScene() {
     const y1 = rand() * VBH;
     const horiz = rand() < 0.5;
     const len = 120 + rand() * 240;
-    const x2 = horiz ? x1 + len : x1;
-    const y2 = horiz ? y1 : y1 + len;
     const mx = horiz ? x1 + len * 0.6 : x1;
     const my = horiz ? y1 : y1 + len * 0.6;
     const ex = horiz ? mx : mx + 80 * (rand() < 0.5 ? -1 : 1);
@@ -133,9 +139,30 @@ function buildScene() {
   return { paths, nodes };
 }
 
+function buildScrollPath(points: TracePoint[]) {
+  if (points.length < 2) return "";
+
+  return points.slice(1).reduce(
+    (path, point, index) => {
+      const previous = points[index];
+      const midY = previous.y + (point.y - previous.y) * 0.5;
+      const bend = Math.min(90, Math.abs(point.x - previous.x) * 0.22);
+      const c1x = previous.x + Math.sign(point.x - previous.x || 1) * bend;
+      const c2x = point.x - Math.sign(point.x - previous.x || 1) * bend;
+
+      return `${path} C ${c1x.toFixed(1)} ${midY.toFixed(1)}, ${c2x.toFixed(1)} ${midY.toFixed(1)}, ${point.x.toFixed(1)} ${point.y.toFixed(1)}`;
+    },
+    `M ${points[0].x.toFixed(1)} ${points[0].y.toFixed(1)}`,
+  );
+}
+
 export function AmbientBackground() {
-  const scene = useMemo(buildScene, []);
+  const scene = useMemo(() => buildScene(), []);
   const rootRef = useRef<HTMLDivElement | null>(null);
+  const scrollTraceRef = useRef<HTMLDivElement | null>(null);
+  const scrollSvgRef = useRef<SVGSVGElement | null>(null);
+  const scrollPathRef = useRef<SVGPathElement | null>(null);
+  const scrollGlowRef = useRef<SVGPathElement | null>(null);
   const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
@@ -193,126 +220,268 @@ export function AmbientBackground() {
     };
   }, [reduced]);
 
+  useEffect(() => {
+    const traceRoot = scrollTraceRef.current;
+    const svg = scrollSvgRef.current;
+    const path = scrollPathRef.current;
+    const glow = scrollGlowRef.current;
+    if (!traceRoot || !svg || !path || !glow) return;
+
+    let raf = 0;
+    let cachedLength = 0;
+
+    const update = () => {
+      raf = 0;
+      const doc = document.documentElement;
+      const body = document.body;
+      const pageHeight = Math.max(
+        body.scrollHeight,
+        body.offsetHeight,
+        doc.clientHeight,
+        doc.scrollHeight,
+        doc.offsetHeight,
+      );
+      const viewportWidth = window.innerWidth;
+      const scrollY = window.scrollY;
+      const anchors = Array.from(
+        document.querySelectorAll<HTMLElement>(SCROLL_NODE_SELECTOR),
+      );
+      const points = anchors
+        .map((el) => {
+          const rect = el.getBoundingClientRect();
+          return {
+            x: rect.left + rect.width / 2,
+            y: rect.top + scrollY + rect.height / 2,
+          };
+        })
+        .filter((point) => point.y > 0 && point.y < pageHeight)
+        .sort((a, b) => a.y - b.y || a.x - b.x);
+
+      traceRoot.style.height = `${pageHeight}px`;
+      svg.setAttribute("viewBox", `0 0 ${viewportWidth} ${pageHeight}`);
+
+      if (points.length < 2) {
+        path.removeAttribute("d");
+        glow.removeAttribute("d");
+        return;
+      }
+
+      const d = buildScrollPath(points);
+      path.setAttribute("d", d);
+      glow.setAttribute("d", d);
+      cachedLength = path.getTotalLength();
+
+      const start = points[0].y - window.innerHeight * 0.7;
+      const end = points[points.length - 1].y - window.innerHeight * 0.35;
+      const progress = reduced
+        ? 1
+        : Math.min(
+            1,
+            Math.max(0, (scrollY - start) / Math.max(1, end - start)),
+          );
+
+      path.style.strokeDasharray = `${cachedLength}`;
+      path.style.strokeDashoffset = `${cachedLength * (1 - progress)}`;
+      glow.style.strokeDasharray = `${cachedLength}`;
+      glow.style.strokeDashoffset = `${cachedLength * (1 - progress)}`;
+    };
+
+    const requestUpdate = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+
+    const resizeObserver = new ResizeObserver(requestUpdate);
+    resizeObserver.observe(document.body);
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+    requestUpdate();
+    const timeout = window.setTimeout(requestUpdate, 350);
+
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+      window.clearTimeout(timeout);
+      resizeObserver.disconnect();
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+    };
+  }, [reduced]);
+
   return (
-    <div
-      ref={rootRef}
-      aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
-      style={{
-        // Master opacity: visible but still background-level
-        opacity: 0.24,
-        // Speed multiplier controlled by scroll
-        // @ts-expect-error custom prop
-        "--trace-speed": 1,
-        contain: "strict",
-      }}
-    >
-      <svg
-        viewBox={`0 0 ${VBW} ${VBH}`}
-        preserveAspectRatio="xMidYMid slice"
-        className="absolute inset-0 h-full w-full"
+    <>
+      <div
+        ref={rootRef}
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
+        style={
+          {
+            opacity: 0.24,
+            "--trace-speed": 1,
+            contain: "strict",
+          } as CSSProperties & { "--trace-speed": number }
+        }
       >
-        <defs>
-          <filter
-            id="ambient-glow"
-            x="-20%"
-            y="-20%"
-            width="140%"
-            height="140%"
-          >
-            <feGaussianBlur stdDeviation="2.2" result="b" />
-            <feMerge>
-              <feMergeNode in="b" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-          <radialGradient id="ambient-node">
-            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.95" />
-            <stop offset="60%" stopColor={ACCENT} stopOpacity="0.7" />
-            <stop offset="100%" stopColor={ACCENT} stopOpacity="0" />
-          </radialGradient>
-          <radialGradient id="ambient-vignette" cx="50%" cy="50%" r="75%">
-            <stop offset="60%" stopColor="#000" stopOpacity="0" />
-            <stop offset="100%" stopColor="#000" stopOpacity="0.55" />
-          </radialGradient>
-        </defs>
-
-        {/* Path groups (parallax) */}
-        <g
-          filter="url(#ambient-glow)"
-          stroke={ACCENT}
-          fill="none"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+        <svg
+          viewBox={`0 0 ${VBW} ${VBH}`}
+          preserveAspectRatio="xMidYMid slice"
+          className="absolute inset-0 h-full w-full"
         >
-          <g data-parallax="0.09" style={{ willChange: "transform" }}>
-            <path
-              d={PRIMARY_LINE}
-              strokeWidth="1.65"
-              strokeOpacity="0.95"
-              strokeDasharray="220 980"
-              style={
-                reduced
-                  ? { strokeDasharray: "none", strokeOpacity: 0.45 }
-                  : {
-                      animation: "ambient-trace 16s linear -4s infinite",
-                      animationDuration: "calc(16s / var(--trace-speed, 1))",
+          <defs>
+            <filter
+              id="ambient-glow"
+              x="-20%"
+              y="-20%"
+              width="140%"
+              height="140%"
+            >
+              <feGaussianBlur stdDeviation="2.2" result="b" />
+              <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+            <radialGradient id="ambient-node">
+              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.95" />
+              <stop offset="60%" stopColor={ACCENT} stopOpacity="0.7" />
+              <stop offset="100%" stopColor={ACCENT} stopOpacity="0" />
+            </radialGradient>
+            <radialGradient id="ambient-vignette" cx="50%" cy="50%" r="75%">
+              <stop offset="60%" stopColor="#000" stopOpacity="0" />
+              <stop offset="100%" stopColor="#000" stopOpacity="0.55" />
+            </radialGradient>
+          </defs>
+
+          <g
+            filter="url(#ambient-glow)"
+            stroke={ACCENT}
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <g data-parallax="0.09" style={{ willChange: "transform" }}>
+              <path
+                d={PRIMARY_LINE}
+                strokeWidth="1.65"
+                strokeOpacity="0.95"
+                strokeDasharray="220 980"
+                style={
+                  reduced
+                    ? { strokeDasharray: "none", strokeOpacity: 0.45 }
+                    : {
+                        animation: "ambient-trace 16s linear -4s infinite",
+                        animationDuration: "calc(16s / var(--trace-speed, 1))",
+                      }
+                }
+              />
+              <path d={PRIMARY_LINE} strokeWidth="5" strokeOpacity="0.12" />
+            </g>
+            {scene.paths.map((p, i) => {
+              const dash = Math.max(80, p.len * 0.22);
+              const gap = p.len;
+              return (
+                <g
+                  key={`p${i}`}
+                  data-parallax={p.parallax}
+                  style={{ willChange: "transform" }}
+                >
+                  <path
+                    d={p.d}
+                    strokeWidth={p.width}
+                    strokeOpacity={0.85}
+                    strokeDasharray={`${dash} ${gap}`}
+                    style={
+                      reduced
+                        ? { strokeDasharray: "none", strokeOpacity: 0.25 }
+                        : {
+                            animation: `ambient-trace ${p.dur}s linear ${p.delay}s infinite`,
+                            animationDuration: `calc(${p.dur}s / var(--trace-speed, 1))`,
+                          }
                     }
-              }
-            />
-            <path d={PRIMARY_LINE} strokeWidth="5" strokeOpacity="0.12" />
+                  />
+                </g>
+              );
+            })}
           </g>
-          {scene.paths.map((p, i) => {
-            const dash = Math.max(80, p.len * 0.22);
-            const gap = p.len;
-            return (
-              <g
-                key={`p${i}`}
-                data-parallax={p.parallax}
-                style={{ willChange: "transform" }}
-              >
-                <path
-                  d={p.d}
-                  strokeWidth={p.width}
-                  strokeOpacity={0.85}
-                  strokeDasharray={`${dash} ${gap}`}
-                  style={
-                    reduced
-                      ? { strokeDasharray: "none", strokeOpacity: 0.25 }
-                      : {
-                          animation: `ambient-trace ${p.dur}s linear ${p.delay}s infinite`,
-                          animationDuration: `calc(${p.dur}s / var(--trace-speed, 1))`,
-                        }
-                  }
-                />
-              </g>
-            );
-          })}
-        </g>
 
-        {/* Glowing intersection nodes */}
-        <g filter="url(#ambient-glow)">
-          {scene.nodes.map((n, i) => (
-            <circle
-              key={`n${i}`}
-              cx={n.x}
-              cy={n.y}
-              r={n.r}
-              fill="url(#ambient-node)"
-              style={
-                reduced
-                  ? { opacity: 0.5 }
-                  : {
-                      animation: `ambient-pulse ${4 + (i % 5)}s ease-in-out ${n.delay}s infinite`,
-                    }
-              }
-            />
-          ))}
-        </g>
+          <g filter="url(#ambient-glow)">
+            {scene.nodes.map((n, i) => (
+              <circle
+                key={`n${i}`}
+                cx={n.x}
+                cy={n.y}
+                r={n.r}
+                fill="url(#ambient-node)"
+                style={
+                  reduced
+                    ? { opacity: 0.5 }
+                    : {
+                        animation: `ambient-pulse ${4 + (i % 5)}s ease-in-out ${n.delay}s infinite`,
+                      }
+                }
+              />
+            ))}
+          </g>
 
-        {/* Soft vignette to keep edges from feeling busy */}
-        <rect width={VBW} height={VBH} fill="url(#ambient-vignette)" />
-      </svg>
+          <rect width={VBW} height={VBH} fill="url(#ambient-vignette)" />
+        </svg>
+      </div>
+
+      <div
+        ref={scrollTraceRef}
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 z-0 overflow-hidden opacity-45"
+      >
+        <svg
+          ref={scrollSvgRef}
+          className="absolute inset-0 h-full w-full"
+          fill="none"
+          preserveAspectRatio="none"
+        >
+          <defs>
+            <linearGradient
+              id="scroll-trace-gradient"
+              x1="0"
+              x2="1"
+              y1="0"
+              y2="1"
+            >
+              <stop offset="0%" stopColor="#10B981" stopOpacity="0" />
+              <stop offset="16%" stopColor="#10B981" stopOpacity="0.72" />
+              <stop offset="58%" stopColor="#9D7CFF" stopOpacity="0.64" />
+              <stop offset="100%" stopColor="#F4C95D" stopOpacity="0.22" />
+            </linearGradient>
+            <filter
+              id="scroll-trace-glow"
+              x="-12%"
+              y="-12%"
+              width="124%"
+              height="124%"
+            >
+              <feGaussianBlur stdDeviation="5" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+          <path
+            ref={scrollGlowRef}
+            stroke="url(#scroll-trace-gradient)"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="18"
+            strokeOpacity="0.16"
+            filter="url(#scroll-trace-glow)"
+          />
+          <path
+            ref={scrollPathRef}
+            stroke="url(#scroll-trace-gradient)"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2.2"
+            strokeOpacity="0.86"
+          />
+        </svg>
+      </div>
 
       <style>{`
         @keyframes ambient-trace {
@@ -324,7 +493,7 @@ export function AmbientBackground() {
           50%      { opacity: 0.9;  transform: scale(1.25); transform-box: fill-box; transform-origin: center; }
         }
       `}</style>
-    </div>
+    </>
   );
 }
 

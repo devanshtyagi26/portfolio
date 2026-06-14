@@ -5,7 +5,11 @@ function Education() {
   return (
     <section id="education" className="px-6 py-28 md:py-36">
       <div className="mx-auto max-w-6xl">
-        <SectionLabel kicker="06 · Education" title="Academic foundations." />
+        <SectionLabel
+          data-scroll-node
+          kicker="06 · Education"
+          title="Academic foundations."
+        />
         <div className="grid gap-6 md:grid-cols-[2fr_1fr]">
           <Reveal>
             <div className="rounded-2xl border border-border bg-surface/50 p-8">
@@ -29,7 +33,10 @@ function Education() {
                 </div>
               </div>
               <div className="mt-6">
-                <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                <div
+                  data-scroll-node
+                  className="text-xs uppercase tracking-[0.2em] text-muted-foreground"
+                >
                   Core coursework
                 </div>
                 <div className="mt-3 flex flex-wrap gap-2">

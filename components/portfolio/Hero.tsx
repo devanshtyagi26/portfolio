@@ -1,20 +1,30 @@
-import { ArrowUpRight, Download } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Download } from "lucide-react";
 import { Reveal, NeuralVisual } from "./visuals";
-import { ACHIEVEMENTS } from "@/lib/data";
+import { ACHIEVEMENTS, TagVariant } from "@/lib/data";
 import image from "../../public/profile.jpg";
 
 function Hero() {
+  const tagStyles: Record<TagVariant, string> = {
+    info: "border-blue-200  bg-blue-50   text-blue-800  dark:border-blue-800  dark:bg-blue-950  dark:text-blue-200",
+    warning:
+      "border-amber-200 bg-amber-50  text-amber-800 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-200",
+    success:
+      "border-green-200 bg-green-50  text-green-800 dark:border-green-800 dark:bg-green-950 dark:text-green-200",
+  };
   return (
     <section id="top" className="relative px-6 pb-24 pt-33 md:pt-25 lg:pb-32">
       <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[1.15fr_1fr]">
         <div>
           <Reveal>
-            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/60 px-3 py-1 text-xs text-muted-foreground">
+            <div
+              data-scroll-node
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/60 px-3 py-1 text-xs text-muted-foreground"
+            >
               <span className="relative flex h-1.5 w-1.5">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
                 <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
               </span>
-              Available for AI/ML & research roles · 2026
+              Available for AI/ML & Research Roles · 2026
             </div>
           </Reveal>
           <Reveal delay={0.05}>
@@ -32,10 +42,9 @@ function Hero() {
           </Reveal>
           <Reveal delay={0.2}>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground">
-              Final-year Computer Science student specializing in AI/ML,
-              passionate about transforming complex data into practical
-              solutions through machine learning, full-stack engineering, and
-              computational research.
+              Final-year CS student specializing in AI/ML — transforming complex
+              data into practical solutions through machine learning, full-stack
+              engineering, and computational research.
             </p>
           </Reveal>
           <Reveal delay={0.28}>
@@ -50,13 +59,13 @@ function Hero() {
                 href="/resume.pdf"
                 className="group inline-flex items-center gap-2 rounded-full border border-border bg-surface px-5 py-3 text-sm font-medium text-foreground transition-colors hover:bg-surface-hover"
               >
-                <Download className="h-4 w-4" /> Download resume
+                <Download className="h-4 w-4" /> Resume
               </a>
               <a
                 href="#contact"
                 className="inline-flex items-center gap-2 rounded-full px-3 py-3 text-sm text-muted-foreground transition-colors hover:text-foreground"
               >
-                Contact me →
+                Contact me <ArrowRight className="h-4 w-4" />
               </a>
             </div>
           </Reveal>
@@ -76,36 +85,36 @@ function Hero() {
       </div>
 
       {/* Achievement Highlights */}
-      <Reveal delay={0.35}>
-        <div className="mx-auto mt-20 max-w-6xl flex flex-col gap-3">
-          {ACHIEVEMENTS.map((item) => {
-            const Icon = item.icon;
-            return (
-              <div
-                key={item.title}
-                className="flex items-center gap-4 rounded-2xl border border-border bg-surface/40 px-6 py-4 transition-colors hover:bg-surface/70"
-              >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border bg-background">
-                  <Icon className="h-4 w-4 text-muted-foreground" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-foreground truncate">
-                    {item.title}
-                  </p>
-                  <p className="mt-0.5 text-xs text-muted-foreground">
-                    {item.subtitle}
-                  </p>
-                </div>
-                {item.tag && (
-                  <span className="shrink-0 rounded border border-accent bg-accent/20 px-2 py-0.5 text-[10px] tracking-[0.08em] text-accent">
-                    {item.tag}
-                  </span>
-                )}
+      <div className="mx-auto mt-20 max-w-6xl grid grid-cols-2 gap-3 md:grid-cols-4">
+        {ACHIEVEMENTS.map((item) => {
+          const Icon = item.icon;
+          return (
+            <div
+              key={item.title}
+              className="flex flex-col gap-3 rounded-2xl border border-border bg-surface/40 p-5 transition-colors hover:bg-surface/70"
+            >
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-background">
+                <Icon className="h-4 w-4 text-muted-foreground" />
               </div>
-            );
-          })}
-        </div>
-      </Reveal>
+              <div className="flex-1">
+                <p className="text-sm font-medium text-foreground">
+                  {item.title}
+                </p>
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  {item.subtitle}
+                </p>
+              </div>
+              {item.tag && (
+                <span
+                  className={`shrink-0 w-fit rounded border px-2 py-0.5 text-[10px] tracking-[0.08em] ${tagStyles[item.tagVariant]}`}
+                >
+                  {item.tag}
+                </span>
+              )}
+            </div>
+          );
+        })}
+      </div>
     </section>
   );
 }
