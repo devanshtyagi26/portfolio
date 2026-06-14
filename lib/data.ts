@@ -25,62 +25,179 @@ const TIMELINE = [
 
 const PROJECTS = [
   {
-    name: "CrystaLogiX",
+    name: "CrystaLogiX - Materials Informatics Platform",
     flagship: true,
     blurb:
-      "Hybrid XGBoost ensemble for real-time electronic bandgap prediction across inorganic crystals.",
+      "Full-stack materials informatics platform for real-time electronic bandgap prediction using a two-stage XGBoost hurdle framework with conformal uncertainty quantification.",
     points: [
-      "Research paper under review at npj Computational Materials",
-      "Materials Project data pipeline + GPU-accelerated feature engineering",
-      "FastAPI · Redis · Next.js production deployment",
+      "Research manuscript under peer review at npj Computational Materials proposing a hybrid XGBoost-ensemble architecture for bandgap prediction in inorganic crystals.",
+      "GPU-accelerated pipeline (RAPIDS cuDF) over ~200k Materials Project entries with a two-stage classifier–regressor achieving global MAE of 0.2336 eV and R² of 0.8945.",
+      "Production deployment with Next.js (Netlify), FastAPI + ONNX inference (Render), MongoDB Atlas, and Upstash Redis rate limiting.",
     ],
-    stack: ["Python", "XGBoost", "FastAPI", "Redis", "Next.js"],
+    stack: [
+      "Python",
+      "XGBoost",
+      "ONNX",
+      "Next.js",
+      "FastAPI",
+      "MongoDB",
+      "Redis",
+    ],
+    demo: "https://crystalogix.netlify.app",
+    repo: "https://github.com/devanshtyagi26/CrystaLogiX",
+    isML: true,
   },
   {
     name: "Delhi-NCR Air Quality Analysis",
+    flagship: false,
     blurb:
-      "Ten years of NASA Giovanni satellite data distilled into actionable environmental insight.",
+      "Exploratory data analysis and time-series visualization of a decade of NASA Giovanni satellite data to track Delhi-NCR's shifting pollutant landscape.",
     points: [
-      "Large-scale preprocessing of decade-long satellite records",
-      "Time-series modeling and seasonal decomposition",
-      "Publication-grade visualization of pollutant trends",
+      "Improved data consistency by 70% through advanced preprocessing on large-scale multi-year environmental datasets.",
+      "Identified a 15% decrease in CO and 20% increase in NOx emissions via time-series forecasting across 10 years of satellite observations.",
+      "Produced geospatial visualizations of pollutant distributions over the Delhi-NCR region using GeoPandas and Matplotlib.",
     ],
-    stack: ["Pandas", "NumPy", "Matplotlib", "Statsmodels"],
+    stack: ["Python", "Pandas", "GeoPandas", "Matplotlib", "NASA Giovanni"],
+    isML: false,
   },
   {
-    name: "PopcornPick",
+    name: "PopcornPick - Movie Recommendation System",
+    flagship: false,
     blurb:
-      "ML recommendation engine delivering personalized movie picks with real-time inference.",
+      "Full-stack movie recommendation platform powered by a custom ML model serving personalized picks in real time.",
     points: [
-      "Content-based + collaborative filtering hybrid",
-      "FastAPI backend with sub-100ms inference",
-      "Cold-start handling via metadata embeddings",
+      "Built a custom ML recommendation model improving content relevance and personalization by 30%.",
+      "Deployed RESTful APIs via FastAPI delivering real-time recommendations with sub-second response times.",
     ],
-    stack: ["scikit-learn", "FastAPI", "Pandas"],
+    stack: ["Python", "FastAPI", "Scikit-learn", "Next.js"],
+    demo: "https://popcornpickapp.netlify.app/",
+    repo: "https://github.com/devanshtyagi26/PopcornPick",
+    isML: true,
   },
+
   {
-    name: "Interactive Single-Layer Perceptron",
+    name: "Perceptron Playground",
+    flagship: false,
     blurb:
-      "Educational visualization of a perceptron learning in real time — weights, bias, and decision boundary.",
+      "Interactive browser-based visualizer for a single-layer perceptron, demonstrating real-time weight updates and decision boundary convergence.",
     points: [
-      "Live weight updates as the model trains",
-      "Adjustable learning rate, dataset, and activation",
-      "Built to teach the intuition behind gradient descent",
+      "Visualized real-time weight updates and decision boundary shifts to build intuition around linear classifier convergence.",
+      "Achieved 100% classification accuracy on linearly separable datasets with incremental perceptron training.",
+      "Designed an interactive dashboard with sliders and input fields for learning rate, point count, and target line, cutting model tuning time by 20%.",
     ],
-    stack: ["React", "TypeScript", "Canvas"],
+    stack: ["JavaScript", "HTML", "CSS"],
+    demo: "https://perceptron-playground.vercel.app/",
+    repo: "https://github.com/devanshtyagi26/Perceptron-Visualizer",
+    isML: true,
   },
+
   {
     name: "MNISTic",
+    flagship: false,
     blurb:
-      "CNN digit classifier with 98%+ validation accuracy and a canvas-based prediction interface.",
+      "Handwritten digit predictor powered by a deep learning model trained on MNIST, with real-time canvas-based inference in the browser.",
     points: [
-      "Trained convolutional network on MNIST",
-      "Browser canvas → tensor pipeline for instant inference",
-      "Deployed as a lightweight static web app",
+      "Trained a CNN on the MNIST dataset achieving 98%+ validation accuracy.",
+      "Enabled real-time predictions from a freehand canvas input, making the classification process 70% faster.",
     ],
-    stack: ["TensorFlow", "Keras", "Next.js"],
+    stack: ["Python", "TensorFlow", "Keras", "JavaScript", "HTML", "CSS"],
+    demo: "https://mnistic.netlify.app/",
+    repo: "https://github.com/devanshtyagi26/MNISTic",
+    isML: true,
+  },
+
+  {
+    name: "Neuro XOR",
+    flagship: false,
+    blurb:
+      "Interactive 2D and 3D visualization of an XOR neural network, with custom backpropagation built from scratch and real-time WebGL rendering.",
+    points: [
+      "Implemented a neural network with custom backpropagation and activation functions from scratch — no ML libraries.",
+      "Rendered real-time 2D and 3D decision boundary visualizations using WebGL as the network trains.",
+      "Exposed learning rate, epoch, and weight controls to let users interactively observe how non-linear XOR separation emerges.",
+    ],
+    stack: ["JavaScript", "WebGL", "HTML", "CSS"],
+    demo: "https://neuro-xor.vercel.app/",
+    repo: "https://github.com/devanshtyagi26/XOR-MultiLayer-Perceptron",
+    ISML: true,
+  },
+  {
+    name: "HappeningsNow",
+    flagship: false,
+    blurb:
+      "Location-based event and movie discovery app with real-time listings fetched via SerpApi and OTP-gated access to event details.",
+    points: [
+      "Fetched and displayed real-time city-specific event listings using SerpApi with dynamic location-based filtering.",
+      "Implemented OTP-based email verification to restrict access to full event details.",
+      "Synced filter state to URL params via useSearchParams and managed global event data through a custom Context API.",
+    ],
+    stack: ["React", "Node.js", "SerpApi", "Vite", "CSS"],
+    demo: "https://happenings-now.netlify.app/",
+    repo: "https://github.com/devanshtyagi26/HappeningsNow",
+    isML: false,
+  },
+
+  {
+    name: "MoodLens",
+    flagship: false,
+    blurb:
+      "Emotion detection and mood tracking platform with personalized emotional insights and a comprehensive SRS-backed design.",
+    points: [
+      "Conceptualized and authored full Software Requirements Specification (SRS) documentation prior to development.",
+      "Built an intuitive mood tracking interface delivering personalized emotional insights to users.",
+    ],
+    stack: ["React", "Python", "FastAPI"],
+    demo: "https://emotionrecognitionprototype.web.app/Picture%20Click/index.html",
+    isML: true,
+  },
+
+  {
+    name: "TixMojo",
+    flagship: false,
+    blurb:
+      "Full-featured event ticketing platform built on the MERN stack with a modern, fully responsive UI.",
+    points: [
+      "Built end-to-end ticketing functionality including event browsing, seat selection, and booking management.",
+      "Developed a RESTful backend with Express.js and MongoDB to handle events, users, and transactions.",
+      "Designed a responsive React frontend for a seamless experience across desktop and mobile.",
+    ],
+    stack: ["MongoDB", "Express.js", "React", "Node.js"],
+    demo: "https://tixmojo.com",
+    isML: false,
+  },
+
+  {
+    name: "TEDx Ramanujan College",
+    flagship: false,
+    blurb:
+      "Official TEDx event website with dynamic content management and a fully integrated registration system.",
+    points: [
+      "Built and deployed a fully responsive event website with dynamic content management.",
+      "Engineered a registration system backed by PHP and MySQL to handle attendee data and submissions.",
+    ],
+    stack: ["HTML", "CSS", "JavaScript", "PHP", "MySQL"],
+    isML: false,
+  },
+
+  {
+    name: "FurSure",
+    flagship: false,
+    blurb:
+      "Full-stack CNN image classifier that predicts cats vs. dogs in real time from user uploads, with a FastAPI inference backend and Next.js frontend.",
+    points: [
+      "Trained a CNN on ~2,000 Kaggle images using TensorFlow/Keras with binary crossentropy, achieving high classification accuracy.",
+      "Built a FastAPI backend serving real-time predictions from base64-encoded image uploads with CORS-safe Render deployment.",
+      "Designed a clean Next.js + Tailwind CSS frontend with image preview and instant result display.",
+    ],
+    stack: ["Python", "TensorFlow", "FastAPI", "Next.js"],
+    demo: "https://fursure.netlify.app",
+    repo: "https://github.com/devanshtyagi26/FurSure/",
+    isML: true,
   },
 ];
+
+const projectLength = PROJECTS.length;
+const mlLength = PROJECTS.filter((p) => p.isML).length;
 
 const RESEARCH_PIPELINE = [
   {
@@ -175,8 +292,8 @@ const ACHIEVEMENTS = [
   },
   {
     icon: Rocket,
-    title: "7+ projects shipped",
-    subtitle: "4 ML models in real-world usage",
+    title: `${projectLength}+ projects shipped`,
+    subtitle: `${mlLength} ML models in real-world usage`,
     tag: "Production",
     tagVariant: "success",
   },
@@ -192,4 +309,3 @@ const ACHIEVEMENTS = [
 export type TagVariant = "info" | "warning" | "success";
 
 export { TIMELINE, PROJECTS, RESEARCH_PIPELINE, SKILLS, NAV, ACHIEVEMENTS };
-
