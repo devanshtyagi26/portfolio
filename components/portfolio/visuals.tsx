@@ -9,7 +9,7 @@ export function NeuralVisual() {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
-    // if (!ctx) return;
+    if (!ctx) return;
 
     const W = 460;
     const H = 460;
@@ -49,12 +49,14 @@ export function NeuralVisual() {
     let frame = 0;
 
     function roundedRect(
+      ctx: CanvasRenderingContext2D | null,
       x: number,
       y: number,
       width: number,
       height: number,
       radius: number,
     ) {
+      if (!ctx) return;
       ctx.beginPath();
       ctx.moveTo(x + radius, y);
       ctx.arcTo(x + width, y, x + width, y + height, radius);
@@ -84,7 +86,7 @@ export function NeuralVisual() {
     function draw() {
       frame += 1;
       const t = frame * 0.012;
-
+      if (!ctx) return;
       ctx.clearRect(0, 0, W, H);
 
       // const bg = ctx.createLinearGradient(32, 16, 420, 446);
@@ -103,7 +105,7 @@ export function NeuralVisual() {
       ctx.fillRect(18, 18, 424, 424);
 
       ctx.save();
-      roundedRect(18, 18, 424, 424, 32);
+      roundedRect(ctx, 18, 18, 424, 424, 32);
       ctx.clip();
 
       ctx.lineWidth = 1;

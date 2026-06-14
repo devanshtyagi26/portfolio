@@ -243,6 +243,7 @@ export function AmbientBackground() {
       );
       const viewportWidth = window.innerWidth;
       const scrollY = window.scrollY;
+      const viewportH = window.innerHeight;
       const anchors = Array.from(
         document.querySelectorAll<HTMLElement>(SCROLL_NODE_SELECTOR),
       );
@@ -271,19 +272,30 @@ export function AmbientBackground() {
       glow.setAttribute("d", d);
       cachedLength = path.getTotalLength();
 
-      const start = points[0].y - window.innerHeight * 0.7;
-      const end = points[points.length - 1].y - window.innerHeight * 0.35;
+      // The tip should track viewport center (scrollY + 50vh)
+      // Map that screen position to a 0-1 progress along the path.
+      // Path starts at points[0].y, ends at points[last].y.
+      // We want progress=0 when viewport center is at or above points[0].y,
+      // and progress=1 when viewport center reaches points[last].y.
+      const screenCenter = scrollY + viewportH * 0.5;
+      const pathStart = points[0].y;
+      const pathEnd = points[points.length - 1].y;
+
       const progress = reduced
         ? 1
         : Math.min(
             1,
-            Math.max(0, (scrollY - start) / Math.max(1, end - start)),
+            Math.max(0, (screenCenter - pathStart) / (pathEnd - pathStart)),
           );
 
-      path.style.strokeDasharray = `${cachedLength}`;
-      path.style.strokeDashoffset = `${cachedLength * (1 - progress)}`;
-      glow.style.strokeDasharray = `${cachedLength}`;
-      glow.style.strokeDashoffset = `${cachedLength * (1 - progress)}`;
+      // Reveal from start → tip, hide the rest
+      // dasharray: [visible length] [invisible gap]
+      // dashoffset: 0 so it starts drawing from the beginning
+      const visible = cachedLength * progress;
+      path.style.strokeDasharray = `${visible} ${cachedLength}`;
+      path.style.strokeDashoffset = `0`;
+      glow.style.strokeDasharray = `${visible} ${cachedLength}`;
+      glow.style.strokeDashoffset = `0`;
     };
 
     const requestUpdate = () => {

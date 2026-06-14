@@ -5,7 +5,7 @@ function Footer() {
         <div className="font-mono">
           © {new Date().getFullYear()} Devansh Tyagi
         </div>
-        <div data-scroll-node className="font-mono">
+        <div className="font-mono">
           Designed & built with care · New Delhi, India
         </div>
       </div>

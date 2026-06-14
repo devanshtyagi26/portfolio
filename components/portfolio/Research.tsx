@@ -4,7 +4,7 @@ import { RESEARCH_PIPELINE } from "@/lib/data";
 
 function Research() {
   return (
-    <section id="research" className="px-6 py-28 md:py-36">
+    <section id="research" className="px-6 py-2 md:py-6">
       <div className="mx-auto max-w-6xl">
         <SectionLabel
           data-scroll-node
@@ -49,7 +49,6 @@ function Research() {
               {RESEARCH_PIPELINE.map((p, i) => (
                 <li
                   key={p.step}
-                  data-scroll-node
                   className="relative rounded-xl border border-border bg-background/60 p-5"
                 >
                   <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent">

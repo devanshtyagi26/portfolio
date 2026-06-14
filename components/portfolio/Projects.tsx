@@ -27,8 +27,8 @@ function Projects() {
         <SectionLabel
           data-scroll-node
           kicker="02 · Selected work"
-          title="Projects with a research soul and a production spine."
-          lead="A small set of things I've built end-to-end — from data pipeline to deployed interface."
+          title="End-to-end projects, from research to deployment."
+          lead="A curated set of end-to-end projects spanning research, machine learning, and full-stack development."
         />
 
         {/* Flagship */}
@@ -69,7 +69,7 @@ function Projects() {
               </div>
             </div>
 
-            <ul data-scroll-node className="mt-10 grid gap-4 md:grid-cols-3">
+            <ul className="mt-10 grid gap-4 md:grid-cols-3">
               {PROJECTS[0].points.map((p) => (
                 <li
                   key={p}
@@ -80,7 +80,7 @@ function Projects() {
               ))}
             </ul>
 
-            <div className="mt-6 flex flex-wrap gap-2">
+            <div data-scroll-node className="mt-6 flex flex-wrap gap-2">
               {PROJECTS[0].stack.map((s) => (
                 <span
                   key={s}
@@ -161,7 +161,7 @@ function Projects() {
         {/* View more */}
         {hiddenCount > 0 && (
           <Reveal delay={0.2}>
-            <div className="mt-10 flex justify-center">
+            <div data-scroll-node className="mt-10 flex justify-center">
               <button
                 onClick={() => setExpanded((prev) => !prev)}
                 className="group inline-flex items-center gap-2 rounded-full border border-border bg-background px-5 py-2.5 text-sm text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"

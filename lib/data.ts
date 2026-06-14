@@ -74,7 +74,20 @@ const PROJECTS = [
     repo: "https://github.com/devanshtyagi26/PopcornPick",
     isML: true,
   },
-
+  {
+    name: "PingDot",
+    flagship: false,
+    blurb:
+      "Minimalist always-on-top Windows utility that pulses a single dot when a chosen WhatsApp contact messages you — no notifications, no popups.",
+    points: [
+      "Built a frameless, transparent, click-through Electron overlay that floats above all windows including fullscreen apps.",
+      "Polled WhatsApp Web's DOM via a preload script every 2.5s to detect unread badges without Puppeteer or any external Chromium dependency.",
+      "Shipped as a single portable .exe with a tray icon for runtime contact switching and a config.json for dot size, color, position, and polling interval.",
+    ],
+    stack: ["Electron", "JavaScript", "HTML", "CSS"],
+    repo: "https://github.com/devanshtyagi26/PingDot",
+    isML: false,
+  },
   {
     name: "Perceptron Playground",
     flagship: false,
@@ -269,7 +282,7 @@ const SKILLS = [
 const NAV = [
   { href: "#about", label: "About" },
   { href: "#projects", label: "Projects" },
-  { href: "#research", label: "Research" },
+  // { href: "#research", label: "Research" },
   { href: "#experience", label: "Experience" },
   { href: "#skills", label: "Skills" },
   { href: "#contact", label: "Contact" },
@@ -306,6 +319,28 @@ const ACHIEVEMENTS = [
   },
 ] as const;
 
+const EXPERIENCE = [
+  {
+    company: "LOUDER",
+    role: "Full Stack Developer",
+    duration: "Feb. 2025 – Apr. 2025",
+    description: [
+      "Rebuilt legacy ticketing systems end-to-end using the MERN stack.",
+      "Reduced page load times significantly through targeted frontend optimization.",
+      "Improved frontend rendering performance by restructuring component hierarchies and data fetching.",
+      "Improved database efficiency through schema redesign and strategic indexing.",
+    ],
+  },
+];
+
 export type TagVariant = "info" | "warning" | "success";
 
-export { TIMELINE, PROJECTS, RESEARCH_PIPELINE, SKILLS, NAV, ACHIEVEMENTS };
+export {
+  TIMELINE,
+  PROJECTS,
+  RESEARCH_PIPELINE,
+  SKILLS,
+  NAV,
+  ACHIEVEMENTS,
+  EXPERIENCE,
+};
