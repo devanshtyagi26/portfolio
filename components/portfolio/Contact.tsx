@@ -1,37 +1,39 @@
 import { ArrowUpRight, Mail, FileText } from "lucide-react";
 import { Reveal } from "./visuals";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaLinkedinIn } from "react-icons/fa";
+
+const links = [
+  {
+    icon: Mail,
+    label: "Email",
+    value: "devansh.tyagi@example.com",
+    href: "mailto:devansh.tyagi@example.com",
+  },
+  {
+    icon: FaLinkedinIn,
+    label: "LinkedIn",
+    value: "/in/devansh-tyagi",
+    href: "https://linkedin.com/in/devansh-tyagi",
+  },
+  {
+    icon: FaGithub,
+    label: "GitHub",
+    value: "@devansh-tyagi",
+    href: "https://github.com/devansh-tyagi",
+  },
+  {
+    icon: FileText,
+    label: "Resume",
+    value: "Download PDF",
+    href: "/resume.pdf",
+  },
+];
 
 function Contact() {
-  const links = [
-    {
-      icon: Mail,
-      label: "Email",
-      value: "devansh.tyagi@example.com",
-      href: "mailto:devansh.tyagi@example.com",
-    },
-    {
-      // icon: Linkedin,
-      label: "LinkedIn",
-      value: "/in/devansh-tyagi",
-      href: "https://linkedin.com",
-    },
-    {
-      icon: FaGithub,
-      label: "GitHub",
-      value: "@devansh-tyagi",
-      href: "https://github.com",
-    },
-    {
-      icon: FileText,
-      label: "Resume",
-      value: "Download PDF",
-      href: "/resume.pdf",
-    },
-  ];
   return (
     <section id="contact" className="px-6 py-28 md:py-40">
-      <div className="mx-auto max-w-5xl text-center">
+      <div className="mx-auto max-w-5xl">
+        {/* Heading block — left aligned, more editorial */}
         <Reveal>
           <div
             data-scroll-node
@@ -40,47 +42,67 @@ function Contact() {
             07 · Contact
           </div>
         </Reveal>
-        <Reveal delay={0.05}>
-          <h2 className="font-display mt-5 text-balance text-5xl leading-[1.05] tracking-tight md:text-7xl">
-            Let's build something
-            <br />
-            worth publishing.
-          </h2>
+
+        <div className="mt-5 grid gap-12 md:grid-cols-[1fr_auto] md:items-end">
+          <Reveal delay={0.05}>
+            <h2 className="font-display text-balance text-5xl leading-[1.02] tracking-tight md:text-7xl">
+              Let's build something
+              <br />
+              worth publishing.
+            </h2>
+            <p className="mt-5 max-w-lg text-base leading-relaxed text-muted-foreground">
+              Open to research collaborations, AI/ML roles, and interesting
+              problems. If you have something worth discussing, I'm listening.
+            </p>
+          </Reveal>
+
+          {/* Primary CTA */}
+          <Reveal delay={0.1}>
+            <a
+              href="mailto:devansh.tyagi@example.com"
+              className="group inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3.5 text-sm font-medium text-background transition-transform hover:-translate-y-0.5"
+            >
+              Get in touch
+              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            </a>
+          </Reveal>
+        </div>
+
+        {/* Divider */}
+        <Reveal delay={0.14}>
+          <div className="my-14 h-px bg-border/60" />
         </Reveal>
-        <Reveal delay={0.1}>
-          <p
-            data-scroll-node
-            className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground"
-          >
-            I'm always excited to discuss machine learning, research
-            collaborations, innovative ideas, and opportunities to build
-            meaningful technology.
-          </p>
-        </Reveal>
+
+        {/* Link cards */}
         <Reveal delay={0.18}>
-          <div className="mx-auto mt-12 grid max-w-3xl gap-px overflow-hidden rounded-2xl border border-border bg-border/70 sm:grid-cols-2">
-            {links.map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                className="group flex items-center justify-between gap-4 bg-background p-5 text-left transition-colors hover:bg-surface"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface text-foreground">
-                    {/* <l.icon className="h-4 w-4" /> */}
-                  </span>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {links.map((l) => {
+              const Icon = l.icon;
+              return (
+                <a
+                  key={l.label}
+                  href={l.href}
+                  target={l.href.startsWith("http") ? "_blank" : undefined}
+                  rel="noopener noreferrer"
+                  className="group flex flex-col justify-between gap-8 rounded-2xl border border-border bg-surface/40 p-6 transition-colors hover:bg-surface/70"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-background text-foreground">
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    <ArrowUpRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground" />
+                  </div>
                   <div>
-                    <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                    <div className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
                       {l.label}
                     </div>
-                    <div className="mt-0.5 text-sm font-medium text-foreground">
+                    <div className="mt-1 text-sm font-medium text-foreground">
                       {l.value}
                     </div>
                   </div>
-                </div>
-                <ArrowUpRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground" />
-              </a>
-            ))}
+                </a>
+              );
+            })}
           </div>
         </Reveal>
       </div>

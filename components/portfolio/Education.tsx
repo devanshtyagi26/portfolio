@@ -8,77 +8,91 @@ function Education() {
         <SectionLabel
           data-scroll-node
           kicker="06 · Education"
-          title="Academic foundations."
+          title="Formally trained, self-driven beyond it."
         />
-        <div className="grid gap-6 md:grid-cols-[2fr_1fr]">
+
+        <div className="grid gap-4 md:grid-cols-[2fr_1fr]">
+          {/* Degree card */}
           <Reveal>
-            <div className="rounded-2xl border border-border bg-surface/50 p-8">
-              <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="h-full rounded-2xl border border-border bg-surface/40 p-8 md:p-10">
+              <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
-                  <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-                    Expected August 2026
+                  <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent">
+                    2022 – 2026
                   </div>
-                  <h3 className="font-display mt-2 text-3xl tracking-tight">
-                    Ramanujan College, University of Delhi
+                  <h3 className="font-display mt-3 text-3xl tracking-tight">
+                    Ramanujan College
                   </h3>
-                  <div className="mt-1 text-muted-foreground">
-                    Bachelor of Science (Hons.) Computer Science
+                  <div className="mt-0.5 text-base text-muted-foreground">
+                    University of Delhi
+                  </div>
+                  <div className="mt-1 text-sm text-muted-foreground">
+                    B.Sc. (Hons.) Computer Science
                   </div>
                 </div>
-                <div className="rounded-xl border border-border bg-background px-4 py-2 text-right">
-                  <div className="font-display text-2xl">9.27</div>
-                  <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                <div className="rounded-2xl border border-border bg-background px-5 py-3 text-center">
+                  <div className="font-display text-3xl tracking-tight">
+                    9.27
+                  </div>
+                  <div className="mt-0.5 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
                     CGPA
+                  </div>
+                  <div className="mt-1.5 text-[10px] text-accent">
+                    Top of class
                   </div>
                 </div>
               </div>
-              <div className="mt-6">
-                <div
-                  data-scroll-node
-                  className="text-xs uppercase tracking-[0.2em] text-muted-foreground"
-                >
-                  Core coursework
-                </div>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {[
-                    "Data Structures",
-                    "Algorithms",
-                    "DBMS",
-                    "Linear Algebra",
-                    "Multivariate Calculus",
-                  ].map((c) => (
-                    <span
-                      key={c}
-                      className="rounded-full border border-border bg-background px-3 py-1 text-sm text-foreground/90"
-                    >
-                      {c}
-                    </span>
-                  ))}
-                </div>
+
+              {/* Divider */}
+              <div className="my-7 h-px bg-border/60" />
+
+              <div className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+                Core coursework
+              </div>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {[
+                  "Data Structures & Algorithms",
+                  "Database Management",
+                  "Linear Algebra",
+                  "Multivariate Calculus",
+                  "Operating Systems",
+                  "Computer Networks",
+                ].map((c) => (
+                  <span
+                    key={c}
+                    className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs text-foreground/80"
+                  >
+                    {c}
+                  </span>
+                ))}
               </div>
             </div>
           </Reveal>
 
+          {/* School scores */}
           <Reveal delay={0.08}>
-            <div className="grid h-full gap-4">
-              <div className="rounded-2xl border border-border bg-surface/40 p-6">
-                <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-                  School Topper
+            <div className="flex h-full flex-col gap-4">
+              {[
+                { label: "Class X", score: "94.4%", note: "School topper" },
+                { label: "Class XII", score: "93%", note: "School topper" },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  className="flex flex-1 flex-col justify-between rounded-2xl border border-border bg-surface/40 p-7 transition-colors hover:bg-surface/70"
+                >
+                  <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+                    {item.note}
+                  </div>
+                  <div>
+                    <div className="font-display text-4xl tracking-tight">
+                      {item.score}
+                    </div>
+                    <div className="mt-1 text-sm text-muted-foreground">
+                      {item.label} · CBSE
+                    </div>
+                  </div>
                 </div>
-                <div className="font-display mt-2 text-3xl tracking-tight">
-                  94.4%
-                </div>
-                <div className="text-sm text-muted-foreground">Class X</div>
-              </div>
-              <div className="rounded-2xl border border-border bg-surface/40 p-6">
-                <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
-                  School Topper
-                </div>
-                <div className="font-display mt-2 text-3xl tracking-tight">
-                  93%
-                </div>
-                <div className="text-sm text-muted-foreground">Class XII</div>
-              </div>
+              ))}
             </div>
           </Reveal>
         </div>
@@ -86,4 +100,5 @@ function Education() {
     </section>
   );
 }
+
 export default Education;

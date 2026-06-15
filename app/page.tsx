@@ -31,9 +31,8 @@ function Portfolio() {
       <Hero />
       <About />
       <Projects />
-      {/* <Research /> */}
-      <Experience />
       <Skills />
+      <Experience />
       <Education />
       <Contact />
       <Footer />

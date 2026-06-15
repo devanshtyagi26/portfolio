@@ -239,44 +239,168 @@ const RESEARCH_PIPELINE = [
   },
 ];
 
-const SKILLS = [
+export type SkillItem = { name: string; logo: string | null };
+type SkillCategory = { group: string; items: SkillItem[] };
+
+const SKILLS: SkillCategory[] = [
   {
-    group: "Machine Learning & AI",
+    group: "Data & Analytics",
     items: [
-      "Scikit-learn",
-      "TensorFlow",
-      "Keras",
-      "CNNs",
-      "OpenCV",
-      "Neural Networks",
-      "FastAPI Deployment",
-    ],
-  },
-  {
-    group: "Data Science",
-    items: [
-      "Pandas",
-      "NumPy",
-      "EDA",
-      "Statistical Modeling",
-      "Probability",
-      "Linear Algebra",
-      "Optimization",
+      {
+        name: "Pandas",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg",
+      },
+      {
+        name: "NumPy",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original.svg",
+      },
+      {
+        name: "Matplotlib",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matplotlib/matplotlib-original.svg",
+      },
+      {
+        name: "Optimization",
+        logo: null,
+      },
+      {
+        name: "SQL",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg",
+      },
+      {
+        name: "Microsoft Excel",
+        logo: "https://static.cdnlogo.com/logos/m/96/microsoft-excel.png",
+      },
     ],
   },
   {
     group: "Development",
     items: [
-      "Next.js",
-      "React",
-      "MERN",
-      "Node.js",
-      "REST APIs",
-      "MongoDB",
-      "MySQL",
+      {
+        name: "TypeScript",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
+      },
+      {
+        name: "React",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
+      },
+      {
+        name: "Next.js",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg",
+      },
+      {
+        name: "Node.js",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg",
+      },
+      {
+        name: "Express",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg",
+      },
+      {
+        name: "GraphQL",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/graphql/graphql-plain.svg",
+      },
+      {
+        name: "MySQL",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg",
+      },
+      {
+        name: "MongoDB",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg",
+      },
+      {
+        name: "PostgreSQL",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg",
+      },
+      {
+        name: "Redis",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg",
+      },
+      {
+        name: "REST APIs",
+        logo: null,
+      },
     ],
   },
-  { group: "Programming", items: ["Python", "JavaScript", "C++", "PHP"] },
+  {
+    group: "ML & Deep Learning",
+    items: [
+      {
+        name: "PyTorch",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytorch/pytorch-original.svg",
+      },
+      {
+        name: "TensorFlow",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tensorflow/tensorflow-original.svg",
+      },
+      {
+        name: "scikit-learn",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/scikitlearn/scikitlearn-original.svg",
+      },
+      {
+        name: "CNNs",
+        logo: null,
+      },
+      {
+        name: "OpenCV",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/opencv/opencv-original.svg",
+      },
+
+      {
+        name: "HuggingFace",
+        logo: "https://huggingface.co/front/assets/huggingface_logo-noborder.svg",
+      },
+      {
+        name: "Keras",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/keras/keras-original.svg",
+      },
+      {
+        name: "XGBoost",
+        logo: null,
+      },
+    ],
+  },
+  {
+    group: "MLOps & Cloud",
+    items: [
+      {
+        name: "Docker",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg",
+      },
+      {
+        name: "FastAPI",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg",
+      },
+      {
+        name: "AWS",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg",
+      },
+      {
+        name: "MLflow",
+        logo: null,
+      },
+      {
+        name: "Git",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg",
+      },
+    ],
+  },
+  {
+    group: "Programming",
+    items: [
+      {
+        name: "Python",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
+      },
+      {
+        name: "JavaScript",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
+      },
+      {
+        name: "C++",
+        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg",
+      },
+    ],
+  },
 ];
 
 const NAV = [
