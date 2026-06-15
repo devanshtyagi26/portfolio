@@ -6,26 +6,26 @@ const links = [
   {
     icon: Mail,
     label: "Email",
-    value: "devansh.tyagi@example.com",
-    href: "mailto:devansh.tyagi@example.com",
+    value: "tyagidevansh3@gmail.com",
+    href: "mailto:tyagidevansh3@gmail.com",
   },
   {
     icon: FaLinkedinIn,
     label: "LinkedIn",
-    value: "/in/devansh-tyagi",
-    href: "https://linkedin.com/in/devansh-tyagi",
+    value: "/in/tyagi-devansh",
+    href: "https://linkedin.com/in/tyagi-devansh",
   },
   {
     icon: FaGithub,
     label: "GitHub",
-    value: "@devansh-tyagi",
-    href: "https://github.com/devansh-tyagi",
+    value: "@devanshtyagi26",
+    href: "https://github.com/devanshtyagi26",
   },
   {
     icon: FileText,
     label: "Resume",
     value: "Download PDF",
-    href: "/resume.pdf",
+    href: "/Devansh_Tyagi_Resume.pdf",
   },
 ];
 
@@ -59,7 +59,9 @@ function Contact() {
           {/* Primary CTA */}
           <Reveal delay={0.1}>
             <a
-              href="mailto:devansh.tyagi@example.com"
+              href="mailto:tyagidevansh3@gmail.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="group inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3.5 text-sm font-medium text-background transition-transform hover:-translate-y-0.5"
             >
               Get in touch
@@ -82,7 +84,7 @@ function Contact() {
                 <a
                   key={l.label}
                   href={l.href}
-                  target={l.href.startsWith("http") ? "_blank" : undefined}
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="group flex flex-col justify-between gap-8 rounded-2xl border border-border bg-surface/40 p-6 transition-colors hover:bg-surface/70"
                 >

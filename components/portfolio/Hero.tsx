@@ -56,7 +56,9 @@ function Hero() {
                 View projects <ArrowUpRight className="h-4 w-4" />
               </a>
               <a
-                href="/resume.pdf"
+                href="/Devansh_Tyagi_Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group inline-flex items-center gap-2 rounded-full border border-border bg-surface px-5 py-3 text-sm font-medium text-foreground transition-colors hover:bg-surface-hover"
               >
                 <Download className="h-4 w-4" /> Resume
