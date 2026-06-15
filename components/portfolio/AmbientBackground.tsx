@@ -440,7 +440,7 @@ export function AmbientBackground() {
       <div
         ref={scrollTraceRef}
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 z-0 overflow-hidden opacity-45"
+        className="pointer-events-none absolute inset-x-0 top-0 z-0 overflow-hidden opacity-85"
       >
         <svg
           ref={scrollSvgRef}

@@ -4,7 +4,7 @@ import { TIMELINE } from "@/lib/data";
 
 function About() {
   return (
-    <section id="about" className="px-6 py-28 md:py-2">
+    <section id="about" className="px-6 py-28 md:py-20">
       <div className="mx-auto max-w-6xl flex gap-16">
         <div>
           <SectionLabel

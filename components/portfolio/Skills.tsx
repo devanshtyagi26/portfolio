@@ -26,13 +26,9 @@ function SkillPill({ item }: { item: SkillItem }) {
 
 function Skills() {
   return (
-    <section id="skills" className="px-6 py-28 md:py-36">
+    <section id="skills" className="px-6 py-28 md:py-20">
       <div className="mx-auto max-w-6xl">
-        <SectionLabel
-          data-scroll-node
-          kicker="05 · Toolkit"
-          title="My core stack."
-        />
+        <SectionLabel kicker="05 · Toolkit" title="My core stack." />
         <div data-scroll-node className="grid gap-3 md:grid-cols-2">
           {SKILLS.map((cat, i) => (
             <Reveal key={cat.group} delay={i * 0.07}>

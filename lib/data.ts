@@ -407,8 +407,8 @@ const NAV = [
   { href: "#about", label: "About" },
   { href: "#projects", label: "Projects" },
   // { href: "#research", label: "Research" },
-  { href: "#experience", label: "Experience" },
   { href: "#skills", label: "Skills" },
+  { href: "#experience", label: "Experience" },
   { href: "#contact", label: "Contact" },
 ];
 

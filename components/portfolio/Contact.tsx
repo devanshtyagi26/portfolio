@@ -31,7 +31,7 @@ const links = [
 
 function Contact() {
   return (
-    <section id="contact" className="px-6 py-28 md:py-40">
+    <section id="contact" className="px-6 py-28 md:py-20">
       <div className="mx-auto max-w-5xl">
         {/* Heading block — left aligned, more editorial */}
         <Reveal>

@@ -4,7 +4,7 @@ import { RESEARCH_PIPELINE } from "@/lib/data";
 
 function Research() {
   return (
-    <section id="research" className="px-6 py-2 md:py-6">
+    <section id="research" className="px-6 py-28 md:py-20">
       <div className="mx-auto max-w-6xl">
         <SectionLabel
           data-scroll-node

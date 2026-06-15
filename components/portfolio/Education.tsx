@@ -3,10 +3,9 @@ import { Reveal } from "./visuals";
 
 function Education() {
   return (
-    <section id="education" className="px-6 py-28 md:py-36">
+    <section id="education" className="px-6 py-28 md:py-20">
       <div className="mx-auto max-w-6xl">
         <SectionLabel
-          data-scroll-node
           kicker="06 · Education"
           title="Formally trained, self-driven beyond it."
         />
@@ -87,7 +86,10 @@ function Education() {
                     <div className="font-display text-4xl tracking-tight">
                       {item.score}
                     </div>
-                    <div className="mt-1 text-sm text-muted-foreground">
+                    <div
+                      data-scroll-node
+                      className="mt-1 text-sm text-muted-foreground"
+                    >
                       {item.label} · CBSE
                     </div>
                   </div>

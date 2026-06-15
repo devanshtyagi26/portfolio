@@ -22,7 +22,7 @@ function Projects() {
   const hiddenCount = gridProjects.length - 3;
 
   return (
-    <section id="projects" className="px-6 py-28 md:py-36">
+    <section id="projects" className="px-6 py-28 md:py-20">
       <div className="mx-auto max-w-6xl">
         <SectionLabel
           data-scroll-node
@@ -161,7 +161,7 @@ function Projects() {
         {/* View more */}
         {hiddenCount > 0 && (
           <Reveal delay={0.2}>
-            <div data-scroll-node className="mt-10 flex justify-center">
+            <div className="mt-10 flex justify-center">
               <button
                 onClick={() => setExpanded((prev) => !prev)}
                 className="group inline-flex items-center gap-2 rounded-full border border-border bg-background px-5 py-2.5 text-sm text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
@@ -178,6 +178,7 @@ function Projects() {
             </div>
           </Reveal>
         )}
+        <span data-scroll-node className="ml-50"></span>
       </div>
     </section>
   );
