@@ -31,9 +31,9 @@ const links = [
 
 function Contact() {
   return (
-    <section id="contact" className="px-6 py-28 md:py-20">
+    <section id="contact" className="px-4 sm:px-6 py-15 md:py-28">
       <div className="mx-auto max-w-5xl">
-        {/* Heading block — left aligned, more editorial */}
+        {/* Kicker */}
         <Reveal>
           <div
             data-scroll-node
@@ -43,14 +43,15 @@ function Contact() {
           </div>
         </Reveal>
 
-        <div className="mt-5 grid gap-12 md:grid-cols-[1fr_auto] md:items-end">
+        {/* Heading + CTA: stacked on mobile, side-by-side on md */}
+        <div className="mt-5 grid gap-8 md:grid-cols-[1fr_auto] md:items-end md:gap-12">
           <Reveal delay={0.05}>
-            <h2 className="font-display text-balance text-5xl leading-[1.02] tracking-tight md:text-7xl">
+            <h2 className="font-display text-balance text-4xl leading-[1.02] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
               Let's build something
-              <br />
+              <br className="hidden sm:block" />
               worth publishing.
             </h2>
-            <p className="mt-5 max-w-lg text-base leading-relaxed text-muted-foreground">
+            <p className="mt-4 sm:mt-5 max-w-lg text-sm sm:text-base leading-relaxed text-muted-foreground">
               Open to research collaborations, AI/ML roles, and interesting
               problems. If you have something worth discussing, I'm listening.
             </p>
@@ -72,7 +73,7 @@ function Contact() {
 
         {/* Divider */}
         <Reveal delay={0.14}>
-          <div className="my-14 h-px bg-border/60" />
+          <div className="my-10 sm:my-14 h-px bg-border/60" />
         </Reveal>
 
         {/* Link cards */}
@@ -86,7 +87,7 @@ function Contact() {
                   href={l.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex flex-col justify-between gap-8 rounded-2xl border border-border bg-surface/40 p-6 transition-colors hover:bg-surface/70"
+                  className="group flex flex-col justify-between gap-6 sm:gap-8 rounded-2xl border border-border bg-surface/40 p-5 sm:p-6 transition-colors hover:bg-surface/70"
                 >
                   <div className="flex items-center justify-between">
                     <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-background text-foreground">
@@ -98,7 +99,7 @@ function Contact() {
                     <div className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
                       {l.label}
                     </div>
-                    <div className="mt-1 text-sm font-medium text-foreground">
+                    <div className="mt-1 text-xs sm:text-sm font-medium text-foreground">
                       {l.value}
                     </div>
                   </div>

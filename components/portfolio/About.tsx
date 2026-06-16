@@ -4,17 +4,17 @@ import { TIMELINE } from "@/lib/data";
 
 function About() {
   return (
-    <section id="about" className="px-6 py-28 md:py-20">
-      <div className="mx-auto max-w-6xl flex gap-16">
-        <div>
+    <section id="about" className="px-4 sm:px-6 py-15 md:py-28">
+      <div className="mx-auto max-w-6xl flex flex-col gap-12 lg:flex-row lg:gap-16">
+        {/* Left: text */}
+        <div className="flex-1 min-w-0">
           <SectionLabel
             kicker="01 · About"
             title="Building ML systems that turn messy data into decisions that hold up."
-            // fullWidth
           />
           <div className="grid gap-16">
             <Reveal>
-              <div className="space-y-5 text-lg leading-relaxed text-muted-foreground">
+              <div className="space-y-5 text-base sm:text-lg leading-relaxed text-muted-foreground">
                 <p>
                   A curiosity-driven engineer becoming a researcher. The
                   questions I cared about stopped being about features and
@@ -25,10 +25,11 @@ function About() {
           </div>
         </div>
 
-        <Reveal delay={0.1}>
+        {/* Right: timeline */}
+        <Reveal delay={0.1} className="flex-shrink-0">
           <ol
             data-scroll-node
-            className="relative space-y-7 border-l border-border pl-7 w-max"
+            className="relative space-y-7 border-l border-border pl-7"
           >
             {TIMELINE.map((t) => (
               <li key={t.title} className="relative">
@@ -38,10 +39,10 @@ function About() {
                 <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
                   {t.year}
                 </div>
-                <div className="mt-1 text-base font-medium text-foreground">
+                <div className="mt-1 text-sm sm:text-base font-medium text-foreground">
                   {t.title}
                 </div>
-                <div className="mt-1 text-sm text-muted-foreground">
+                <div className="mt-1 text-xs sm:text-sm text-muted-foreground">
                   {t.detail}
                 </div>
               </li>

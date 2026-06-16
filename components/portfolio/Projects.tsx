@@ -12,8 +12,6 @@ import { Reveal } from "./visuals";
 import { PROJECTS } from "@/lib/data";
 import { FaGithub } from "react-icons/fa";
 
-const INITIAL_VISIBLE = 4; // flagship + 3 grid cards
-
 function Projects() {
   const [expanded, setExpanded] = useState(false);
 
@@ -22,7 +20,7 @@ function Projects() {
   const hiddenCount = gridProjects.length - 3;
 
   return (
-    <section id="projects" className="px-6 py-28 md:py-20">
+    <section id="projects" className="px-4 sm:px-6 py-15 md:py-28">
       <div className="mx-auto max-w-6xl">
         <SectionLabel
           data-scroll-node
@@ -33,20 +31,20 @@ function Projects() {
 
         {/* Flagship */}
         <Reveal>
-          <article className="group relative overflow-hidden rounded-3xl border border-border bg-surface/60 p-8 transition-colors hover:bg-surface md:p-12">
+          <article className="group relative overflow-hidden rounded-2xl sm:rounded-3xl border border-border bg-surface/60 p-6 sm:p-8 md:p-12 transition-colors hover:bg-surface">
             {/* top shimmer line */}
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
 
-            <div className="flex flex-wrap items-start justify-between gap-6">
+            <div className="flex flex-col gap-5 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between sm:gap-6">
               <div className="max-w-2xl">
                 <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-accent">
                   <span>Flagship</span>
                   <span className="text-muted-foreground">/ research</span>
                 </div>
-                <h3 className="font-display mt-3 text-5xl tracking-tight md:text-6xl">
+                <h3 className="font-display mt-3 text-4xl tracking-tight sm:text-5xl md:text-6xl">
                   CrystaLogiX
                 </h3>
-                <p className="mt-4 text-lg text-muted-foreground">
+                <p className="mt-4 text-base sm:text-lg text-muted-foreground">
                   {PROJECTS[0].blurb}
                 </p>
               </div>
@@ -59,6 +57,7 @@ function Projects() {
                   <ExternalLink className="h-3.5 w-3.5" />
                   Live demo
                 </a>
+
                 <a
                   href={PROJECTS[0].repo ?? "#"}
                   className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-4 py-2 text-xs font-medium text-foreground transition-colors hover:bg-surface"
@@ -69,18 +68,19 @@ function Projects() {
               </div>
             </div>
 
-            <ul className="mt-10 grid gap-4 md:grid-cols-3">
+            {/* Flagship points: stacked on mobile, 3-col on md */}
+            <ul className="mt-8 grid gap-3 sm:gap-4 sm:grid-cols-2 md:grid-cols-3">
               {PROJECTS[0].points.map((p) => (
                 <li
                   key={p}
-                  className="rounded-xl border border-border bg-background/60 p-4 text-sm leading-relaxed text-muted-foreground"
+                  className="rounded-xl border border-border bg-background/60 p-3 sm:p-4 text-sm leading-relaxed text-muted-foreground"
                 >
                   {p}
                 </li>
               ))}
             </ul>
 
-            <div data-scroll-node className="mt-6 flex flex-wrap gap-2">
+            <div data-scroll-node className="mt-5 flex flex-wrap gap-2">
               {PROJECTS[0].stack.map((s) => (
                 <span
                   key={s}
@@ -94,13 +94,13 @@ function Projects() {
         </Reveal>
 
         {/* Grid */}
-        <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-6 sm:mt-8 grid gap-6 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {visibleGrid.map((p, idx) => (
             <Reveal key={p.name} delay={idx * 0.05}>
-              <article className="group flex h-full flex-col justify-between rounded-2xl border border-border bg-surface/40 p-7 transition-colors hover:bg-surface">
+              <article className="group flex h-full flex-col justify-between rounded-2xl border border-border bg-surface/40 p-5 sm:p-7 transition-colors hover:bg-surface">
                 <div>
                   <div className="flex items-start justify-between gap-3">
-                    <h3 className="font-display text-2xl tracking-tight">
+                    <h3 className="font-display text-xl sm:text-2xl tracking-tight">
                       {p.name}
                     </h3>
                     <ArrowUpRight className="h-4 w-4 shrink-0 translate-y-1 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground" />
@@ -108,20 +108,20 @@ function Projects() {
                   <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                     {p.blurb}
                   </p>
-                  <ul className="mt-5 space-y-2">
+                  <ul className="mt-4 space-y-2">
                     {p.points.map((pt) => (
                       <li
                         key={pt}
-                        className="flex gap-2.5 text-sm text-muted-foreground"
+                        className="flex gap-2 text-sm text-muted-foreground"
                       >
-                        <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" />
+                        <ChevronRight className="h-4 w-4 shrink-0 mt-0.5 text-muted-foreground" />
                         {pt}
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-5">
+                <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4">
                   <div className="flex flex-wrap gap-1.5">
                     {p.stack.map((s) => (
                       <span
@@ -132,7 +132,7 @@ function Projects() {
                       </span>
                     ))}
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 shrink-0">
                     {p.demo && (
                       <a
                         href={p.demo}
@@ -161,7 +161,7 @@ function Projects() {
         {/* View more */}
         {hiddenCount > 0 && (
           <Reveal delay={0.2}>
-            <div className="mt-10 flex justify-center">
+            <div className="mt-8 sm:mt-10 flex justify-center">
               <button
                 onClick={() => setExpanded((prev) => !prev)}
                 className="group inline-flex items-center gap-2 rounded-full border border-border bg-background px-5 py-2.5 text-sm text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
@@ -178,7 +178,6 @@ function Projects() {
             </div>
           </Reveal>
         )}
-        <span data-scroll-node className="ml-50"></span>
       </div>
     </section>
   );
