@@ -27,7 +27,7 @@ function Portfolio() {
         />
       </div>
 
-      <Nav />
+      {/* <Nav /> */}
       <Hero />
       <About />
       <Projects />
@@ -35,7 +35,7 @@ function Portfolio() {
       <Experience />
       <Education />
       <Contact />
-      <Footer />
+      {/* <Footer /> */}
     </main>
   );
 }

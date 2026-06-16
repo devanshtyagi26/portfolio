@@ -1,6 +1,6 @@
-import { ArrowUpRight } from "lucide-react";
-import { NAV } from "@/lib/data";
 import { ModeToggle } from "../Toggle";
+import { MobileNav } from "./nav/mobile-nav";
+import { DesktopNav } from "./nav/desktop-nav";
 
 function Nav() {
   return (
@@ -13,30 +13,15 @@ function Nav() {
           <span className="inline-block h-2 w-2 rounded-full bg-accent" />
           <span>Devansh Tyagi</span>
         </a>
-        <nav className="hidden items-center gap-6 md:flex">
-          {NAV.map((n) => (
-            <a
-              key={n.href}
-              href={n.href}
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {n.label}
-            </a>
-          ))}
-        </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 mr-2 lg:gap-6 lg:mr-6">
           <ModeToggle />
-          <a
-            href="#contact"
-            className="group inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-3.5 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-surface-hover"
-          >
-            Get in touch
-            <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-          </a>
+          <DesktopNav />
+          <MobileNav />
         </div>
       </div>
     </header>
   );
 }
+
 export default Nav;
